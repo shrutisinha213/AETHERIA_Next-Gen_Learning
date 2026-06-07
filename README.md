@@ -79,6 +79,13 @@ We implemented strict rules to avoid browser paint re-calculations:
 
 ---
 
+## 🧗 Challenges & Solutions
+
+*   **Hydration Mismatches with Dynamic Layouts**: We initially used `Math.random()` to generate random opacity values for the contribution heatmap. This caused hydration errors because the server-rendered values didn't match the client-rendered values. **Solution**: Replaced `Math.random()` with a deterministic hash function based on the grid cell coordinates, ensuring identical rendering on both server and client.
+*   **Framer Motion Server/Client Split**: Passing animation state from a Server Component to a Client Component can be tricky, and mixing `framer-motion` imports in RSC causes errors. **Solution**: Strictly isolated all Framer Motion components (like `DashboardContainer`, `CourseTile`, etc.) into `use client` files, while keeping the main data-fetching page as a Server Component. We pass the fetched data down as simple serializable props.
+
+---
+
 ## 💾 Database Setup
 
 To hook the application up to your Supabase instance, follow these steps:
